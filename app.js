@@ -5,7 +5,13 @@ import TuitsController from "./controllers/tuits/tuits-controller.js";
 import cors from 'cors'
 const app = express();
 app.use(express.json())
-app.use(cors())
+app.use(cors(
+    {
+        origin:["https://a8--nimble-salamander-6b50f8.netlify.app"],
+        methods: ["GET","POST","PUT","DELETE"],
+        credentials: true
+    }
+));
 
 HelloController(app)
 UserController(app);
