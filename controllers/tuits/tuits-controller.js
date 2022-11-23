@@ -1,6 +1,6 @@
-import posts from "./tuits.json" assert { type: 'json' };
-let tuits = posts;
-
+// import posts from "./tuits.json" assert { type: 'json' };
+// let tuits = posts;
+import * as tuitsDao from "./tuits-dao.js"
 const TuitsController = (app)=>{
     app.get("/api/tuits",findTuits);
     app.post("/api/tuits",createTuit);
@@ -12,17 +12,16 @@ const deleteTuit = (req,res)=>{
     tuits = tuits.filter(t => t._id!==req.params.tid);
     res.json(tuits);
 }
-const findTuits = (req,res)=>{
+const findTuits = async (req,res)=>{
+    const tuits = await tuitsDao.findTuits();
     res.json(tuits);
 }
 const updateTuit = (req,res)=> {
     const updatedTuit = req.body
-    const tuitIndex = tuits.findIndex(t => t._id===req.params.tid)
-    tuits[tuitIndex] = {
-        ...tuits[tuitIndex],
-        ...updatedTuit
-    };
-    res.json(tuits);
+    const tuitIdToUpdate = req.params.tid;
+    const status = tuitsDao.updateTuit(tuitIdToUpdate,updatedTuit);
+
+    res.json(status);
 }
 const createTuit = (req,res)=>{
     let tuit = req.body;
