@@ -7,11 +7,10 @@ import TuitsController from "./controllers/tuits/tuits-controller.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
-const MONGO_ATLAS = 'mongodb+srv://mymongodb:<password>@cluster0.b0yoet4.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_ATLAS = 'mongodb+srv://mymongodb:keepitsimple@cluster0.b0yoet4.mongodb.net/tuiter?retryWrites=true&w=majority';
 let CONNECTION_STRING = process.env.DB_CONNECTION_STRING === undefined? MONGO_ATLAS : process.env.DB_CONNECTION_STRING;
 const MONGO_LOCAL = 'mongodb://localhost:27017/tuiter';
 mongoose.connect(CONNECTION_STRING);
-mongoose.connect("mongodb://localhost:27017/tuiter")
 TuitsController(app);
 HelloController(app)
 UserController(app);
