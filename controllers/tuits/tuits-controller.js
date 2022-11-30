@@ -8,26 +8,25 @@ const TuitsController = (app)=>{
     app.delete("/api/tuits/:tid",deleteTuit);
 }
 
-const deleteTuit = (req,res)=>{
-    tuits = tuits.filter(t => t._id!==req.params.tid);
-    res.json(tuits);
+const deleteTuit = async (req,res)=>{
+    const tuitIdToBeDeleted = req.params.tid
+    const status = await tuitsDao.deleteTuit(tuitIdToBeDeleted)
+    res.json(status);
 }
 const findTuits = async (req,res)=>{
     const tuits = await tuitsDao.findTuits();
     res.json(tuits);
 }
-const updateTuit = (req,res)=> {
-    const updatedTuit = req.body
-    const tuitIdToUpdate = req.params.tid;
-    const status = tuitsDao.updateTuit(tuitIdToUpdate,updatedTuit);
-
+const updateTuit = async (req,res)=> {
+    const tuitIdToUpdate = parseInt(req.params.tid);
+    const updates = req.body
+    const status = await tuitsDao.updateTuit(tuitIdToUpdate,updates);
     res.json(status);
 }
-const createTuit = (req,res)=>{
+const createTuit = async (req,res)=>{
     let tuit = req.body;
-    tuit._id = new Date().getTime();
-    tuits.push(tuit);
-    res.json(tuits);
+    const status = await tuitsDao.createTuit(tuit)
+    res.json(status);
 
 }
 export default TuitsController;
